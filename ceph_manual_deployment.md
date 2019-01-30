@@ -11,10 +11,10 @@ Tested in ubuntu 16.04
 <br>	|
 <br>	|_________ node3: osd7, osd8, osd9
 
-host name           IP address
-node1               10.10.2.100
-node2               10.10.2.101
-node3               10.10.2.102
+<br>host name           IP address
+<br>node1               10.10.2.100
+<br>node2               10.10.2.101
+<br>node3               10.10.2.102
 
 Note : Multiple OSD in one physical hardisk will decrease the performance
 ## Building a Cluster
