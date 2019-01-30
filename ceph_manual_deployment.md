@@ -2,14 +2,14 @@
 Tested in ubuntu 16.04
 ## Ceph cluster
 
-ceph-admin 
-	|_________ node1: mon1, osd0, osd1, osd3
-	|
-	|
-	|_________ node2: osd4, osd5, osd6 
-	|
-	|
-	|_________ node3: osd7, osd8, osd9
+<br>ceph-admin 
+<br>	|_________ node1: mon1, osd0, osd1, osd3
+<br>	|
+<br>	|
+<br>	|_________ node2: osd4, osd5, osd6 
+<br>	|
+<br>	|
+<br>	|_________ node3: osd7, osd8, osd9
 
 host name           IP address
 node1               10.10.2.100
