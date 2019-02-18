@@ -1,7 +1,6 @@
 # Demystifying Ceph Storage Cluster 4.0
 
-<<<<<<< Updated upstream
-We're going to deploy a Ceph Cluster using the configuration below :
+We're going to deploy a Ceph Cluster using the configuration below:
 
 <br>ceph-admin 
 <br>	|_________ node1: mon1, osd0, osd1, osd3
@@ -20,7 +19,3 @@ We're going to deploy a Ceph Cluster using the configuration below :
 This wiki was compilated from many sources scattered throughout the internet, especially from the official Ceph and Red Hat Documentations. Tested on Ubuntu 16.04 but should work on any newer versions.
 
 Note : Multiple OSD in one physical hardisk will decrease the performance
-=======
-dd_performance is a script to ensure hardisk write/read speed
-ceph_manual_deployment is a deployment documentation
->>>>>>> Stashed changes
