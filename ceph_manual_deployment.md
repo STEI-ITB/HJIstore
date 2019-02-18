@@ -17,6 +17,8 @@ Tested in ubuntu 16.04
 <br>node3               10.10.2.102
 
 Note : Multiple OSD in one physical hardisk will decrease the performance
+<br>
+
 ## Building a Cluster
 ### 1. Installing ceph
 
@@ -42,6 +44,7 @@ in case you need to uninstall it:
 ```
 sudo apt purge ceph-common && sudo apt autoremove
 ```
+<br>
 
 ### 2. Create a initial monitor
 1.Create a Ceph configuration file. By default, Ceph uses ceph.conf, where ceph reflects the cluster name.
@@ -98,6 +101,7 @@ sudo chmod 750 -R /var/lib/ceph/
 ```
 
 note : this configuration use 750 as default permission 
+<br>
 
 10.Populate the monitor daemon(s) with the monitor map and keyring.
 ```
@@ -162,6 +166,7 @@ Start the ceph-mgr daemon:
 ```
 ceph-mgr -i $name
 ```
+<br>
 
 ### 4. Create osd
 add a new osd
@@ -172,6 +177,7 @@ activate the osd
 ```
 sudo ceph-disk activate /dev/hdd1
 ```
+<br>
 
 ### 5. Adding MDS
 1.Create the mds data directory
@@ -204,4 +210,4 @@ ceph-mds --cluster {cluster-name} -i {id} -m {mon-hostname}:{mon-port} [-f]
 ```
 service ceph start
 ```
-
+<br>
