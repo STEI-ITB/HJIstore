@@ -14,15 +14,20 @@ I made some modification:
 - Laptop (optional, for configuration. I use SSH to configure the Rasp-Pi through my laptop)
 
 ## Topology
-node1-----------|
-10.10.2.51      |
-(initial mon)   |
-                |
-node2--------------------------------- Switch----------- Internet------------My Laptop
-10.10.2.52      |
-                |
-node3-----------|
-10.10.2.53
+<br>My laptop
+<br>  |
+<br>  |
+<br>Internet
+<br>  |
+<br>  |
+<br>Switch 
+<br>	|_________ node1: mon1, osd0, osd1        (10.10.2.51)
+<br>	|
+<br>	|
+<br>	|_________ node2: osd2, osd3              (10.10.2.52) 
+<br>	|
+<br>	|
+<br>	|_________ node3: osd4, osd5              (10.10.2.53)
 
 ## Installation Process
 In general, i divide the installation process into several steps.
