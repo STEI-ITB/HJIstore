@@ -1,4 +1,5 @@
 # Mini Ceph Pie
+by: Imam Nur Bani Yusuf 18115027
 ## Introduction
 This project was adapted from an existing project. You can check the original one in: https://github.com/GitHippo/Ceph-Pi.
 I made some modification:
