@@ -286,3 +286,8 @@ sudo systemctl start ceph-osd@<osd-number>
 ```sh
 sudo systemctl start ceph-osd@0
 ```
+
+## Common Problems
+- If you cannot run ceph -s, try to check wether the service is running or not
+- When you boot each node, mount the disk to the corresponding OSD directory. After you mount it, start corresponding OSD service
+- If you cannot start OSD service, check wether the OSD is marked 'in' or 'out'. OSD must be marked 'in' to run normally in the cluster 
