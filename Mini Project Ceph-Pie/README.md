@@ -292,3 +292,58 @@ sudo systemctl start ceph-osd@0
 - If you cannot run ceph -s, try to check wether the service is running or not
 - When you boot each node, mount the disk to the corresponding OSD directory. After you mount it, start corresponding OSD service
 - If you cannot start OSD service, check wether the OSD is marked 'in' or 'out'. OSD must be marked 'in' to run normally in the cluster 
+
+# Data Placement In Ceph
+
+I will simulate how Ceph automatically recover the data when some OSD in down
+
+- Create dummy file
+```sh
+sudo nano /home/pi/testdata
+```
+- Add this line for testing purpose
+```sh
+tes123
+```
+- Create pool. I will use replicated pool with number of replica = 3
+```sh
+sudo ceph osd pool create <pool-name> <pg-num> <pgp-num> <replicated> <crush-ruleset-name> <expected-num-objects>
+```
+```sh
+sudo ceph osd pool create repli-pool-1 256 256 replicated replicated_ruleset 1024
+```
+- Put dummy file in the pool
+```sh
+rados put <object-name> <file-path> --pool=<pool-name>
+```
+```sh
+rados put testdata /home/pi/testdata --pool=repli-pool-1
+```
+- Locate where that dummy file is saved
+```sh
+sudo ceph osd map <pool-name> <object-name>
+```
+```sh
+sudo ceph osd map repli-pool-1 testdata
+```
+- The result will be like this
+```sh
+osdmap e69 pool 'repli-pool-1' (1) object 'testdata' -> pg 1.ac0d544c (1.4c) -> up ([1,3,5], p1) acting ([1,3,5], p1)
+```
+- From this output, we can get some informations: pool-name is repli-pool-1, placement-group-number is 1.4c, primary OSD is 1, and object saved in OSD 1,3,5
+- Check object directly to OSD directory. I will check in primary OSD.
+```sh
+cd /var/lib/ceph/osd/ceph-<osd-number>/current/<placement-group-number>
+```
+```sh
+cd /var/lib/ceph/osd/ceph-1/current/1.4c
+```
+- Now, remove primary OSD. OSD 1 will be marked down and primary OSD will change to other OSD to keep our object still accessible. 
+- Check which OSD is acting primary
+```sh
+sudo ceph osd map repli-pool-1 testdata
+```
+- Check object directly to primary OSD directory
+```sh
+cd /var/lib/ceph/osd/ceph-<osd-number>/current/<placement-group-number>
+```
