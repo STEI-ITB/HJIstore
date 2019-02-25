@@ -330,8 +330,8 @@ sudo ceph osd map repli-pool-1 testdata
 ```sh
 osdmap e69 pool 'repli-pool-1' (1) object 'testdata' -> pg 1.ac0d544c (1.4c) -> up ([1,3,5], p1) acting ([1,3,5], p1)
 ```
-- From this output, we can get some informations: pool-name is repli-pool-1, placement-group-number is 1.4c, primary OSD is 1, and object saved in OSD 1,3,5
-- Check object directly to OSD directory. I will check in primary OSD.
+- From this output, we can get 4 informations: pool-name is repli-pool-1, placement-group-number is 1.4c, primary OSD is 1, and object saved in OSD 1,3,5
+- Check object directly to corresponding OSD directory. I will check in primary OSD directory. You can check to non-primary OSD too, the file is still the same because we used replication rule in the beginning.
 ```sh
 cd /var/lib/ceph/osd/ceph-<osd-number>/current/<placement-group-number>
 ```
@@ -339,11 +339,11 @@ cd /var/lib/ceph/osd/ceph-<osd-number>/current/<placement-group-number>
 cd /var/lib/ceph/osd/ceph-1/current/1.4c
 ```
 - Now, remove primary OSD. OSD 1 will be marked down and primary OSD will change to other OSD to keep our object still accessible. 
-- Check which OSD is acting primary
+- Check which OSD is acting primary now
 ```sh
 sudo ceph osd map repli-pool-1 testdata
 ```
-- Check object directly to primary OSD directory
+- Check object directly to coressponding OSD directory to check accesbility and originality of the object
 ```sh
 cd /var/lib/ceph/osd/ceph-<osd-number>/current/<placement-group-number>
 ```
