@@ -1,4 +1,4 @@
-# Demystifying Ceph Storage Cluster 4.0
+# Build your Own Ceph Cluster
 
 We're going to deploy a Ceph Cluster using the configuration below:
 
@@ -18,4 +18,3 @@ We're going to deploy a Ceph Cluster using the configuration below:
 
 This wiki was compilated from many sources scattered throughout the internet, especially from the official Ceph and Red Hat Documentations. Tested on Ubuntu 16.04 but should work on any newer versions.
 
-Note : Multiple OSD in one physical hardisk will decrease the performance
