@@ -1,0 +1,121 @@
+Cluster Management
+
+1. pool
+
+    Create a pool
+    replication :
+    ceph osd pool create <pool-name> <pg-num> <pgp-num> [replicated] \
+           [crush-rule-name] [expected-num-objects]
+
+    Erasure code
+    ceph osd pool create <pool-name> <pg-num> <pgp-num> erasure \
+             [erasure-code-profile] [crush-rule-name] [expected-num-objects]
+
+    for erasure :
+    sudo ceph osd pool create ec_data_pool 32 32 erasure erasureSSD erasure-code
+    sudo ceph osd pool create ec_metadata_pool 32 32 erasure erasureSSD erasure-code
+
+    for replication :
+    ceph osd pool create replication_data_pool 32
+    ceph osd pool create replication_metadata_pool 32
+
+    List pools
+    sudo ceph osd lspools
+
+    List crush rule
+    sudo ceph osd crush rule list
+
+    Delete a pool
+    ceph osd pool delete {pool-name} [{pool-name} --yes-i-really-really-mean-it]
+    sudo ceph osd pool delete erasure_data erasure_data --yes-i-really-really-mean-it
+
+    Rename a pool/home/visudo/github/ripe-gsm/gsm-ripe.sh
+    ceph osd pool rename {current-pool-name} {new-pool-name}
+    sudo ceph osd rename ec_data_pool ec_pool
+
+    Get a pool value
+    ceph osd pool get {pool-name} {key}
+
+    detailed pool information
+    sudo ceph osd dump | grep 'replicated'
+    sudo ceph osd dump | grep 'erasure'
+
+2. Erasure-code-profile Management
+
+    OSD Erasure-code-profile set
+    ceph osd erasure-code-profile set {name} \
+         [{directory=directory}] \
+         [{plugin=plugin}] \
+         [{stripe_unit=stripe_unit}] \
+         [{key=value} ...] \
+         [--force]
+
+    sudo ceph osd erasure-code-profile set erasureSSD k=4 m=2 crush-failure-domain=host crush-device-class=ssd
+
+    sudo ceph osd pool create ec_metadata_pool 32 32 erasure erasureSSD erasure-code
+
+    OSD Erasure-code-profile list
+    sudo ceph osd erasure-code-profile ls
+
+    OSD Erasure-code-profile get
+    sudo ceph osd erasure-code-profile get <name>
+    sudo ceph osd erasure-code-profile get erasureSSD
+
+    OSD Erasure-code-profile remove
+    ceph osd erasure-code-profile rm <name>
+    ceph osd erasure-code-profile rm erasureSSD
+
+    By default, erasure coded pools only work with the Ceph Object Gateway, which performs full object writes and appends
+    Using erasure coded pools with overwrites allows Ceph Block Devices and CephFS store their data in an erasure coded pool:
+    
+    sudo ceph osd pool set <erasure_coded_pool_name> allow_ec_overwrites true
+
+3. How to remove CephFS
+
+    sudo systemctl stop ceph-mds@node1
+
+    sudo ceph mds cluster_down
+
+    sudo ceph fs rm <ceph fs name> --yes-i-really-mean-it
+    sudo ceph fs rm reasurefs --yes-i-really-mean-it
+
+    Sudo ceph osd pool delete <cephfs data pool> <cephfs data pool> --yes-i-really-mean-it
+    Sudo ceph osd pool delete <cephfs metadata pool> <cephfs metadata pool> --yes-i-really-mean-it
+
+    rm -rf "/var/lib/ceph/mds/<cluster-metadata server>"
+    rm -rf "/var/lib/ceph/mds/ceph-node1"
+
+    ceph auth del mds."$hostname"
+    ceph auth del mds.node1
+
+4. Edit crushmap
+   
+   get crush map:
+   ceph osd getcrushmap -o {compiled-crushmap-filename}
+
+   Decompile crush map
+   crushtool -d {compiled-crushmap-filename} -o {decompiled-crushmap-filename}
+
+   Compile a CRUSH Map
+   crushtool -c {decompiled-crush-map-filename} -o {compiled-crush-map-filename}
+
+   Set a CRUSH Map
+   ceph osd setcrushmap -i  {compiled-crushmap-filename}
+
+5. remove osd
+   -out
+   -stop 
+   -sudo ceph osd purge 1 --yes-i-really-mean-iy
+
+6. remove ceph volume
+   sudo lvremove dev/snadsadsandsd
+
+7. format
+   fdisk /dev/sda
+
+
+ceph osd erasure-code-profile set ec-42-profile k=4 m=2 crush-failure-domain=host crush-device-class=ssd
+ceph osd pool set ssd crush_ruleset 0
+crushtool -d {compiled-crushmap-filename} -o {decompiled-crushmap-filename}
+
+sudo mount -t ceph node1:6789:/ /mnt/cephfs -o name=admin,secret=AQC9roBcDnGfNBAAeGJBrxxf+3ZVW473TdmAnA==

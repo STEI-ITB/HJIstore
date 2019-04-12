@@ -1,19 +1,20 @@
-#!/bin/bash -x
+#!/bin/bash 
 
 createPool(){
     case $1 in
-    erasure)     $ceph osd pool create $1_data 32 32 erasure erasureSSD erasure-code
+    erasure)     $ceph osd pool create $1_data 32 32 erasure erasureSSD erasure_code_ssd
                  $ceph osd pool create $1_metadata 32 
                  $ceph osd pool set $1_data allow_ec_overwrites true;; 
-    replication) $ceph osd pool create $1_data 32 
+    replicated) $ceph osd pool create $1_data 32 32 replicated replicated_rule_ssd 
                  $ceph osd pool create $1_metadata 32 ;;
     esac
 }
 
 createMds(){
-    $mkdir -p /var/lib/ceph/mds/ceph-node1
-    $chown -R ceph:ceph /var/lib/ceph/mds/ceph-node1
-    $chmod 755 ceph-node1
+    cd /var/lib/ceph/mds
+    $mkdir ceph-node1
+    $chown -R ceph:ceph ceph-node1
+    $chmod 755 ceph-node1 
     $ceph-authtool --create-keyring /var/lib/ceph/mds/ceph-node1/keyring --gen-key -n mds.node1
     $chown -R ceph:ceph /var/lib/ceph/mds/ceph-node1
     $chmod 755 /var/lib/ceph/mds/ceph-node1
@@ -26,7 +27,6 @@ createMds(){
 
 if [ -n "$1" ]; then
     ceph=`which ceph`
-    ceph-authtool=`which ceph-authtool`
     mkdir=`which mkdir`
     chown=`which chown`
     chmod=`which chmod`
@@ -41,7 +41,7 @@ if [ -n "$1" ]; then
         createPool "$filesystem" "$filesystem"   
     else
         echo "no available metadata server"
-        createMds
+        #createMds
         createPool "$filesystem" "$filesystem"
     fi  
     
@@ -52,5 +52,6 @@ if [ -n "$1" ]; then
     $ceph mds stat
 else
     echo "No parameters found"
-    echo "try use ./cephfs.sh <erasure/replication>"
+    echo "try use ./cephfs.sh <erasure/replicated>"
 fi
+

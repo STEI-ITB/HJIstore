@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 if [ -n "$1" ]; then
     ceph=`which ceph`
@@ -6,7 +6,7 @@ if [ -n "$1" ]; then
 
     #creating ceph pool
     case "$1" in
-        erasure)     $ceph osd pool create rbd_$1_datapool 32 32 erasure erasureSSD erasure-code
+        erasure)     $ceph osd pool create rbd_$1_datapool 32 32 erasure erasureSSD erasure_code_ssd
                      $ceph osd pool create rbd_$1_pool 32   
                      $ceph osd pool set rbd_$1_datapool allow_ec_overwrites true ;; 
         replication) $ceph osd pool create rbd_$1_datapool 32 
@@ -24,4 +24,3 @@ else
     echo "No parameters found"
     echo "try use ./cephfs.sh <erasure/replication>"
 fi
-

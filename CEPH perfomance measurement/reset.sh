@@ -13,4 +13,3 @@ if  [[ ! -f `$ceph mds stat` ]] ; then
     $rm -R ceph-node1    
     $ceph auth del mds.node1
 fi
-
